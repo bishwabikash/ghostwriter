@@ -28,6 +28,36 @@ Search for "GhostWriter" in the VS Code marketplace and click install.
 3. Run `npm run compile` to build the extension
 4. Press F5 to launch a new VS Code window with the extension loaded
 
+## Publishing
+
+This extension uses GitHub Actions to automatically publish new versions to the VS Code Marketplace when a new release is created.
+
+### Prerequisites for Publishing
+
+1. Create a Personal Access Token (PAT) for the VS Code Marketplace:
+   - Go to https://dev.azure.com/
+   - Create or use an existing organization
+   - Generate a Personal Access Token with the "Marketplace publishing" scope
+
+2. Create a PAT for the Open VSX Registry (optional):
+   - Go to https://open-vsx.org/
+   - Create a namespace and token
+
+3. Add the tokens as secrets in your GitHub repository:
+   - Go to your repository's Settings > Secrets > Actions
+   - Add `VSCE_PAT` with your VS Code Marketplace token
+   - Add `OPEN_VSX_PAT` with your Open VSX token (optional)
+
+### Publishing Process
+
+1. Create a new release on GitHub
+2. The workflow will automatically:
+   - Build and package the extension
+   - Publish it to the VS Code Marketplace
+   - Publish it to the Open VSX Registry (if configured)
+
+You can also manually trigger the publishing workflow from the Actions tab and optionally specify a version.
+
 ## Usage
 
 1. Make sure Ollama is running locally with your preferred model pulled
