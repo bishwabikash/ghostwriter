@@ -6,12 +6,24 @@
   "publisher": "ghostwriter-team",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ghostwriter-team/ghostwriter.git"
+    "url": "https://github.com/bishwabikash/ghostwriter.git"
   },
   "license": "MIT",
   "engines": {
     "vscode": "^1.80.0"
   },
+  "icon": "resources/icon.svg",
+  "galleryBanner": {
+    "color": "#1e1e1e",
+    "theme": "dark"
+  },
+  "keywords": [
+    "ollama",
+    "ai",
+    "code assistant",
+    "llm",
+    "code generation"
+  ],
   "categories": [
     "Other"
   ],

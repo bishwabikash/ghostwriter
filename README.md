@@ -1,5 +1,7 @@
 # GhostWriter
 
+<img src="resources/images/banner.svg" alt="GhostWriter Banner" width="800"/>
+
 GhostWriter is a VS Code extension that provides AI-powered code assistance using Ollama models.
 
 ## Features
