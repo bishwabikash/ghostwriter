@@ -29,38 +29,23 @@ jobs:
         # Install global web-streams-polyfill package
         npm install -g web-streams-polyfill
     
-    - name: Create polyfill wrapper script
+    - name: Node.js version info
       run: |
-        cat > wrapper.js << 'EOF'
-        // Load web streams polyfill
-        require('web-streams-polyfill/dist/ponyfill.js');
+        node --version
+        npm --version
         
-        // Ensure ReadableStream is available
-        if (typeof global.ReadableStream === 'undefined') {
-          const { ReadableStream } = require('web-streams-polyfill/dist/ponyfill.js');
-          global.ReadableStream = ReadableStream;
-          console.log('Added ReadableStream polyfill');
-        }
-        
-        // Execute the original command
-        const { spawnSync } = require('child_process');
-        const args = process.argv.slice(2);
-        if (args.length === 0) {
-          console.error('No command specified');
-          process.exit(1);
-        }
-        
-        console.log(`Running: ${args.join(' ')}`);
-        const result = spawnSync(args[0], args.slice(1), { stdio: 'inherit' });
-        process.exit(result.status);
-        EOF
-        chmod +x wrapper.js
+    - name: Install vsce globally
+      run: npm install -g @vscode/vsce
 
     - name: Build
       run: npm run compile
 
-    - name: Package Extension with polyfill
-      run: node wrapper.js npx @vscode/vsce package
+    - name: Package Extension with direct script
+      run: |
+        # Make sure the script is executable
+        chmod +x scripts/package-extension.js
+        # Run the script directly
+        node scripts/package-extension.js
       
     - name: Upload Extension
       uses: actions/upload-artifact@v4
