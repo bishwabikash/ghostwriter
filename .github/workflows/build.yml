@@ -12,7 +12,7 @@ jobs:
     
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [16.x]
     
     steps:
     - uses: actions/checkout@v4
@@ -26,14 +26,18 @@ jobs:
     - name: Install dependencies
       run: npm ci
     
-    - name: Setup Environment
-      run: npm run setup
+    - name: Setup Environment and Verify
+      run: |
+        node scripts/setup.js
+        node -e "console.log('ReadableStream available:', typeof global.ReadableStream !== 'undefined')"
 
-    - name: Build
-      run: npm run build
+    - name: Build with Polyfills
+      run: node -r ./scripts/setup.js ./node_modules/.bin/webpack
     
-    - name: Package Extension
-      run: node -r ./scripts/setup.js ./node_modules/.bin/vsce package
+    - name: Package Extension with Polyfills
+      run: |
+        npm install -g @vscode/vsce
+        node -r ./scripts/setup.js $(which vsce) package
       
     - name: Upload Extension
       uses: actions/upload-artifact@v4
