@@ -23,5 +23,8 @@ jobs:
         cache: 'npm'
     - run: npm ci
     - run: npm run compile
-    - run: npm run lint
-    - run: npm run package 
+    # Skip lint if you don't have a lint script defined
+    # - run: npm run lint
+    - run: npm run package
+    - name: Package extension
+      run: npx @vscode/vsce package
