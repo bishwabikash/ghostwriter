@@ -17,6 +17,43 @@ GhostWriter is a VS Code extension that provides AI-powered code assistance usin
 - [Ollama](https://ollama.ai) must be installed and running locally
 - A compatible AI model must be pulled in Ollama (e.g., llama3, codellama, etc.)
 
+## Development
+
+### Building the Extension
+
+You can use the included build scripts to compile and package the extension:
+
+#### Simple Build Script
+
+```bash
+./build.sh
+```
+
+This script:
+- Automatically increments the patch version
+- Compiles and packages the extension
+- Keeps only the current and previous version
+
+#### Advanced Build Script
+
+```bash
+./build-advanced.sh [OPTIONS]
+```
+
+Options:
+- `-t, --type TYPE` - Version increment type: patch, minor, or major
+- `-c, --clean` - Clean all previous builds
+- `-k, --keep NUM` - Number of previous versions to keep
+- `-h, --help` - Show help message
+
+Examples:
+```bash
+./build-advanced.sh -t minor      # Increment minor version
+./build-advanced.sh -t major      # Increment major version
+./build-advanced.sh -k 3          # Keep 3 previous versions
+./build-advanced.sh -c            # Clean all previous builds
+```
+
 ## Installation
 
 ### From VS Code Marketplace (Coming Soon)
