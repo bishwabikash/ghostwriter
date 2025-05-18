@@ -24,9 +24,8 @@ jobs:
     
     - name: Install dependencies
       run: |
-        # Set NODE_OPTIONS to load polyfills for all Node.js processes
-        echo "NODE_OPTIONS=--require=web-streams-polyfill/polyfill" >> $GITHUB_ENV
         npm ci
+        npm install -g web-streams-polyfill
     
     - name: Node.js version info
       run: |
@@ -36,9 +35,9 @@ jobs:
     - name: Build
       run: npm run compile
     
-    - name: Package Extension with direct script
+    - name: Package Extension
       run: |
         # Make sure the script is executable
         chmod +x scripts/package-extension.js
         # Run the script directly with polyfills
-        node scripts/package-extension.js
+        node -r web-streams-polyfill/polyfill scripts/package-extension.js

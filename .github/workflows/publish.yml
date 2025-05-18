@@ -23,9 +23,8 @@ jobs:
       
       - name: Install dependencies
         run: |
-          # Set NODE_OPTIONS to load polyfills for all Node.js processes
-          echo "NODE_OPTIONS=--require=web-streams-polyfill/polyfill" >> $GITHUB_ENV
           npm ci
+          npm install -g web-streams-polyfill
       
       - name: Node.js version info
         run: |
@@ -35,20 +34,20 @@ jobs:
       - name: Compile
         run: npm run compile
       
-      - name: Package Extension with direct script
+      - name: Package Extension
         run: |
           # Make sure the script is executable
           chmod +x scripts/package-extension.js
           # Run the script directly with polyfills
-          node scripts/package-extension.js
+          node -r web-streams-polyfill/polyfill scripts/package-extension.js
       
       - name: Update version if provided
         if: github.event.inputs.version != ''
         run: npm version ${{ github.event.inputs.version }} --no-git-tag-version
       
       - name: Publish to VS Code Marketplace
-        run: npx @vscode/vsce publish -p ${{ secrets.VSCE_PAT }}
+        run: node -r web-streams-polyfill/polyfill ./node_modules/.bin/vsce publish -p ${{ secrets.VSCE_PAT }}
         
       - name: Publish to Open VSX Registry
-        run: npx ovsx publish -p ${{ secrets.OPEN_VSX_PAT }}
+        run: node -r web-streams-polyfill/polyfill ./node_modules/.bin/ovsx publish -p ${{ secrets.OPEN_VSX_PAT }}
         continue-on-error: true 
