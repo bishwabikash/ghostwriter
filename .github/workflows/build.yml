@@ -16,6 +16,8 @@ jobs:
     
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Needed to access commit history for versioning
     
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v4
@@ -35,7 +37,12 @@ jobs:
         
     - name: Install vsce globally
       run: npm install -g @vscode/vsce
-
+    
+    - name: Run build.sh
+      run: |
+        chmod +x ./build.sh
+        ./build.sh
+    
     - name: Build
       run: npm run compile
 
