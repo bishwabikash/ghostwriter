@@ -61,6 +61,43 @@ export class ChatProvider implements vscode.WebviewViewProvider {
             max-height: 100vh;
             overflow: hidden;
           }
+          .header {
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--vscode-panel-border);
+            background-color: var(--vscode-sideBar-background);
+          }
+          .model-selector {
+            display: flex;
+            align-items: center;
+          }
+          .model-select {
+            margin-left: 8px;
+            padding: 4px;
+            border: 1px solid var(--vscode-dropdown-border);
+            background-color: var(--vscode-dropdown-background);
+            color: var(--vscode-dropdown-foreground);
+            min-width: 120px;
+          }
+          .status-indicator {
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+          }
+          .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 6px;
+          }
+          .status-online {
+            background-color: #3fb950;
+          }
+          .status-offline {
+            background-color: #f85149;
+          }
           .chat-messages {
             flex: 1;
             overflow-y: auto;
@@ -78,9 +115,64 @@ export class ChatProvider implements vscode.WebviewViewProvider {
           .assistant {
             background-color: var(--vscode-editor-inactiveSelectionBackground);
           }
+          .footer {
+            border-top: 1px solid var(--vscode-panel-border);
+          }
+          .controls {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px;
+            background-color: var(--vscode-sideBar-background);
+          }
+          .control-button {
+            background-color: var(--vscode-button-secondaryBackground);
+            color: var(--vscode-button-secondaryForeground);
+            border: none;
+            padding: 4px 8px;
+            font-size: 12px;
+            border-radius: 2px;
+            cursor: pointer;
+            margin-right: 4px;
+          }
+          .control-button:hover {
+            background-color: var(--vscode-button-secondaryHoverBackground);
+          }
+          .primary-button {
+            background-color: var(--vscode-button-background);
+            color: var(--vscode-button-foreground);
+          }
+          .primary-button:hover {
+            background-color: var(--vscode-button-hoverBackground);
+          }
+          .dropdown {
+            position: relative;
+            display: inline-block;
+          }
+          .dropdown-content {
+            display: none;
+            position: absolute;
+            bottom: 30px;
+            right: 0;
+            min-width: 200px;
+            z-index: 1;
+            background-color: var(--vscode-dropdown-background);
+            border: 1px solid var(--vscode-dropdown-border);
+            border-radius: 3px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+          }
+          .dropdown-content.show {
+            display: block;
+          }
+          .dropdown-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 13px;
+          }
+          .dropdown-item:hover {
+            background-color: var(--vscode-list-hoverBackground);
+          }
           .input-container {
             padding: 10px;
-            border-top: 1px solid var(--vscode-panel-border);
           }
           .input-box {
             width: 100%;
@@ -97,7 +189,6 @@ export class ChatProvider implements vscode.WebviewViewProvider {
             padding: 4px 10px;
             font-size: 12px;
             color: var(--vscode-descriptionForeground);
-            border-top: 1px solid var(--vscode-panel-border);
           }
           .code-block {
             background-color: var(--vscode-textCodeBlock-background);
@@ -123,14 +214,203 @@ export class ChatProvider implements vscode.WebviewViewProvider {
             justify-content: flex-end;
             margin-top: 4px;
           }
+          .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+          }
+          .modal.visible {
+            display: flex;
+          }
+          .modal-content {
+            background-color: var(--vscode-editor-background);
+            padding: 16px;
+            border-radius: 6px;
+            min-width: 300px;
+            max-width: 500px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+          }
+          .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+          }
+          .modal-title {
+            font-size: 16px;
+            font-weight: bold;
+          }
+          .close-button {
+            background: none;
+            border: none;
+            font-size: 16px;
+            cursor: pointer;
+            color: var(--vscode-editor-foreground);
+          }
+          .model-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 16px;
+          }
+          .model-item {
+            padding: 8px;
+            border: 1px solid var(--vscode-panel-border);
+            border-radius: 4px;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+          .model-name {
+            font-weight: bold;
+          }
+          .model-action {
+            background-color: var(--vscode-button-background);
+            color: var(--vscode-button-foreground);
+            border: none;
+            padding: 4px 8px;
+            border-radius: 2px;
+            cursor: pointer;
+          }
+          .model-action:hover {
+            background-color: var(--vscode-button-hoverBackground);
+          }
+          .progress-container {
+            margin-top: 16px;
+          }
+          .progress-title {
+            margin-bottom: 8px;
+            font-size: 14px;
+          }
+          .progress-bar {
+            width: 100%;
+            height: 12px;
+            background-color: var(--vscode-progressBar-background);
+            border-radius: 6px;
+            overflow: hidden;
+          }
+          .progress-value {
+            height: 100%;
+            background-color: var(--vscode-progressBar-foreground);
+            width: 0%;
+            transition: width 0.3s;
+          }
+          .progress-status {
+            margin-top: 6px;
+            font-size: 12px;
+            font-style: italic;
+          }
+          .tab-container {
+            margin-bottom: 16px;
+          }
+          .tab-buttons {
+            display: flex;
+            border-bottom: 1px solid var(--vscode-panel-border);
+          }
+          .tab-button {
+            padding: 8px 12px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+            color: var(--vscode-descriptionForeground);
+          }
+          .tab-button.active {
+            border-bottom: 2px solid var(--vscode-focusBorder);
+            color: var(--vscode-editor-foreground);
+          }
+          .tab-content {
+            display: none;
+            padding: 12px 0;
+          }
+          .tab-content.active {
+            display: block;
+          }
         </style>
     </head>
     <body>
         <div class="chat-container">
+            <div class="header">
+                <div class="model-selector">
+                    <label for="model-select">Model:</label>
+                    <select id="model-select" class="model-select">
+                        <!-- Will be populated dynamically -->
+                    </select>
+                </div>
+                <div class="status-indicator">
+                    <div id="status-dot" class="status-dot status-offline"></div>
+                    <span id="status-text">Checking Ollama...</span>
+                </div>
+            </div>
+            
             <div class="chat-messages" id="chatMessages"></div>
-            <div id="statusBar"></div>
-            <div class="input-container">
-                <textarea class="input-box" id="userInput" placeholder="Type your message here..." rows="3"></textarea>
+            
+            <div class="footer">
+                <div id="statusBar"></div>
+                <div class="controls">
+                    <div>
+                        <button id="clearChat" class="control-button">Clear Chat</button>
+                        <button id="refreshModels" class="control-button">Refresh Models</button>
+                    </div>
+                    <div class="dropdown">
+                        <button id="moreOptions" class="control-button">Options</button>
+                        <div id="optionsDropdown" class="dropdown-content">
+                            <div class="dropdown-item" id="startOllama">Start Ollama</div>
+                            <div class="dropdown-item" id="checkConnection">Check Connection</div>
+                            <div class="dropdown-item" id="downloadModels">Download Models</div>
+                            <div class="dropdown-item" id="setSystemPrompt">Set System Prompt</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-container">
+                    <textarea class="input-box" id="userInput" placeholder="Type your message here..." rows="3"></textarea>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Models Modal -->
+        <div id="modelsModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <div class="modal-title">Manage Models</div>
+                    <button class="close-button" id="closeModelsModal">×</button>
+                </div>
+                
+                <div class="tab-container">
+                    <div class="tab-buttons">
+                        <button class="tab-button active" data-tab="installed">Installed Models</button>
+                        <button class="tab-button" data-tab="available">Available Models</button>
+                    </div>
+                    
+                    <div id="installed-tab" class="tab-content active">
+                        <div id="installed-models" class="model-list">
+                            <!-- Will be populated dynamically -->
+                            <div class="loading">Loading installed models...</div>
+                        </div>
+                    </div>
+                    
+                    <div id="available-tab" class="tab-content">
+                        <div id="available-models" class="model-list">
+                            <!-- Will be populated dynamically -->
+                            <div class="loading">Loading available models...</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="model-progress" class="progress-container" style="display: none;">
+                    <div class="progress-title">Downloading: <span id="progress-model-name"></span></div>
+                    <div class="progress-bar">
+                        <div id="progress-value" class="progress-value"></div>
+                    </div>
+                    <div id="progress-status" class="progress-status">Initializing download...</div>
+                </div>
             </div>
         </div>
 
@@ -140,8 +420,123 @@ export class ChatProvider implements vscode.WebviewViewProvider {
           let chatMessages = document.getElementById('chatMessages');
           let userInput = document.getElementById('userInput');
           
-          // Initialize with the current model
-          vscode.postMessage({ type: 'getModelInfo' });
+          // Model selection
+          const modelSelect = document.getElementById('model-select');
+          
+          // Status indicator
+          const statusDot = document.getElementById('status-dot');
+          const statusText = document.getElementById('status-text');
+          
+          // Controls
+          const clearChatButton = document.getElementById('clearChat');
+          const refreshModelsButton = document.getElementById('refreshModels');
+          const moreOptionsButton = document.getElementById('moreOptions');
+          const optionsDropdown = document.getElementById('optionsDropdown');
+          
+          // Modal elements
+          const modelsModal = document.getElementById('modelsModal');
+          const closeModelsModal = document.getElementById('closeModelsModal');
+          const installedModelsContainer = document.getElementById('installed-models');
+          const availableModelsContainer = document.getElementById('available-models');
+          
+          // Modal tabs
+          const tabButtons = document.querySelectorAll('.tab-button');
+          const tabContents = document.querySelectorAll('.tab-content');
+          
+          // Dropdown items
+          const startOllamaButton = document.getElementById('startOllama');
+          const checkConnectionButton = document.getElementById('checkConnection');
+          const downloadModelsButton = document.getElementById('downloadModels');
+          const setSystemPromptButton = document.getElementById('setSystemPrompt');
+          
+          // Progress elements
+          const modelProgress = document.getElementById('model-progress');
+          const progressModelName = document.getElementById('progress-model-name');
+          const progressValue = document.getElementById('progress-value');
+          const progressStatus = document.getElementById('progress-status');
+          
+          // Initialize UI
+          initUI();
+          
+          function initUI() {
+            // Initialize with the current model and status
+            vscode.postMessage({ type: 'getModelInfo' });
+            vscode.postMessage({ type: 'checkOllamaStatus' });
+            
+            // Add event listeners for UI elements
+            modelSelect.addEventListener('change', () => {
+              vscode.postMessage({
+                type: 'setModel',
+                model: modelSelect.value
+              });
+            });
+            
+            clearChatButton.addEventListener('click', () => {
+              vscode.postMessage({ type: 'clearChat' });
+            });
+            
+            refreshModelsButton.addEventListener('click', () => {
+              vscode.postMessage({ type: 'refreshModels' });
+            });
+            
+            moreOptionsButton.addEventListener('click', () => {
+              optionsDropdown.classList.toggle('show');
+            });
+            
+            // Close dropdown when clicking outside
+            window.addEventListener('click', (event) => {
+              if (!event.target.matches('#moreOptions')) {
+                optionsDropdown.classList.remove('show');
+              }
+            });
+            
+            // Dropdown options
+            startOllamaButton.addEventListener('click', () => {
+              vscode.postMessage({ type: 'startOllama' });
+              optionsDropdown.classList.remove('show');
+            });
+            
+            checkConnectionButton.addEventListener('click', () => {
+              vscode.postMessage({ type: 'checkOllamaStatus' });
+              optionsDropdown.classList.remove('show');
+            });
+            
+            downloadModelsButton.addEventListener('click', () => {
+              optionsDropdown.classList.remove('show');
+              showModelsModal();
+            });
+            
+            setSystemPromptButton.addEventListener('click', () => {
+              vscode.postMessage({ type: 'setSystemPrompt' });
+              optionsDropdown.classList.remove('show');
+            });
+            
+            // Modal events
+            closeModelsModal.addEventListener('click', () => {
+              modelsModal.classList.remove('visible');
+            });
+            
+            // Tab navigation
+            tabButtons.forEach(button => {
+              button.addEventListener('click', () => {
+                const tabId = button.getAttribute('data-tab');
+                
+                // Deactivate all tabs
+                tabButtons.forEach(btn => btn.classList.remove('active'));
+                tabContents.forEach(content => content.classList.remove('active'));
+                
+                // Activate selected tab
+                button.classList.add('active');
+                document.getElementById(tabId + '-tab').classList.add('active');
+              });
+            });
+          }
+          
+          function showModelsModal() {
+            modelsModal.classList.add('visible');
+            vscode.postMessage({ type: 'getAvailableModels' });
+            vscode.postMessage({ type: 'getInstalledModels' });
+          }
           
           // Add event listener for the input field
           userInput.addEventListener('keydown', (event) => {
@@ -169,7 +564,7 @@ export class ChatProvider implements vscode.WebviewViewProvider {
                 updateStatus(message.text);
                 break;
               case 'modelInfo':
-                updateStatus('Model: ' + message.model);
+                updateModelInfo(message.model, message.availableModels);
                 break;
               case 'appendAssistantMessage':
                 appendToLastAssistantMessage(message.content);
@@ -177,8 +572,145 @@ export class ChatProvider implements vscode.WebviewViewProvider {
               case 'clearChat':
                 clearChat();
                 break;
+              case 'ollamaStatus':
+                updateOllamaStatus(message.isRunning, message.version);
+                break;
+              case 'availableModels':
+                updateAvailableModels(message.models);
+                break;
+              case 'installedModels':
+                updateInstalledModels(message.models);
+                break;
+              case 'modelDownloadProgress':
+                updateModelDownloadProgress(message.model, message.status, message.progress);
+                break;
             }
           });
+          
+          function updateModelInfo(currentModel, availableModels) {
+            // Clear current options
+            modelSelect.innerHTML = '';
+            
+            // Add available models
+            if (availableModels && availableModels.length > 0) {
+              availableModels.forEach(model => {
+                const option = document.createElement('option');
+                option.value = model;
+                option.textContent = model;
+                option.selected = (model === currentModel);
+                modelSelect.appendChild(option);
+              });
+            } else {
+              // Add just the current model if no list available
+              const option = document.createElement('option');
+              option.value = currentModel;
+              option.textContent = currentModel;
+              option.selected = true;
+              modelSelect.appendChild(option);
+            }
+            
+            updateStatus('Model: ' + currentModel);
+          }
+          
+          function updateOllamaStatus(isRunning, version) {
+            if (isRunning) {
+              statusDot.className = 'status-dot status-online';
+              statusText.textContent = 'Ollama ' + (version || 'connected');
+            } else {
+              statusDot.className = 'status-dot status-offline';
+              statusText.textContent = 'Ollama offline';
+            }
+          }
+          
+          function updateAvailableModels(models) {
+            availableModelsContainer.innerHTML = '';
+            
+            if (!models || models.length === 0) {
+              availableModelsContainer.innerHTML = '<div class="model-item">No models available</div>';
+              return;
+            }
+            
+            models.forEach(model => {
+              const modelItem = document.createElement('div');
+              modelItem.className = 'model-item';
+              
+              const modelName = document.createElement('div');
+              modelName.className = 'model-name';
+              modelName.textContent = model;
+              
+              const downloadButton = document.createElement('button');
+              downloadButton.className = 'model-action';
+              downloadButton.textContent = 'Download';
+              downloadButton.addEventListener('click', () => {
+                vscode.postMessage({
+                  type: 'pullModel',
+                  model: model
+                });
+                
+                // Show progress UI
+                modelProgress.style.display = 'block';
+                progressModelName.textContent = model;
+                progressValue.style.width = '0%';
+                progressStatus.textContent = 'Preparing download...';
+              });
+              
+              modelItem.appendChild(modelName);
+              modelItem.appendChild(downloadButton);
+              availableModelsContainer.appendChild(modelItem);
+            });
+          }
+          
+          function updateInstalledModels(models) {
+            installedModelsContainer.innerHTML = '';
+            
+            if (!models || models.length === 0) {
+              installedModelsContainer.innerHTML = '<div class="model-item">No models installed</div>';
+              return;
+            }
+            
+            models.forEach(model => {
+              const modelItem = document.createElement('div');
+              modelItem.className = 'model-item';
+              
+              const modelName = document.createElement('div');
+              modelName.className = 'model-name';
+              modelName.textContent = model;
+              
+              const useButton = document.createElement('button');
+              useButton.className = 'model-action';
+              useButton.textContent = 'Use';
+              useButton.addEventListener('click', () => {
+                vscode.postMessage({
+                  type: 'setModel',
+                  model: model
+                });
+                modelsModal.classList.remove('visible');
+              });
+              
+              modelItem.appendChild(modelName);
+              modelItem.appendChild(useButton);
+              installedModelsContainer.appendChild(modelItem);
+            });
+          }
+          
+          function updateModelDownloadProgress(model, status, progress) {
+            if (!status && !progress) {
+              // Download complete or failed
+              modelProgress.style.display = 'none';
+              return;
+            }
+            
+            modelProgress.style.display = 'block';
+            progressModelName.textContent = model;
+            
+            if (progress !== undefined) {
+              progressValue.style.width = progress + '%';
+            }
+            
+            if (status) {
+              progressStatus.textContent = status;
+            }
+          }
           
           function addMessage(role, content) {
             const messageDiv = document.createElement('div');
