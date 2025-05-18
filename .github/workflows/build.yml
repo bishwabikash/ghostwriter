@@ -25,9 +25,9 @@ jobs:
     
     - name: Install dependencies
       run: |
+        # Set NODE_OPTIONS to load polyfills for all Node.js processes
+        echo "NODE_OPTIONS=--require=web-streams-polyfill/polyfill" >> $GITHUB_ENV
         npm ci
-        # Install global web-streams-polyfill package
-        npm install -g web-streams-polyfill
     
     - name: Node.js version info
       run: |
