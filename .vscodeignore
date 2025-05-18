@@ -1,0 +1,17 @@
+.git/
+.github/
+.vscode/
+node_modules/
+src/
+.gitignore
+tsconfig.json
+webpack.config.js
+*.vsix
+**/*.map
+.editorconfig
+.eslintrc.json
+.prettierrc
+.prettierignore
+**/*.ts
+!dist/**/*
+jest.config.js 
