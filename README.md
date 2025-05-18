@@ -21,38 +21,38 @@ GhostWriter is a VS Code extension that provides AI-powered code assistance usin
 
 ### Building the Extension
 
-You can use the included build scripts to compile and package the extension:
-
-#### Simple Build Script
+The GhostWriter extension includes a smart build script that automatically determines the appropriate version increment based on git commit messages:
 
 ```bash
-./build.sh
+./build.sh [OPTIONS]
 ```
 
-This script:
-- Automatically increments the patch version
-- Compiles and packages the extension
-- Keeps only the current and previous version
+**Smart Version Management:**
+- Analyzes git commit messages to determine version increment type
+- Major version: Commits with "BREAKING CHANGE" or "!:"
+- Minor version: Commits with "feat:" or "feature:"
+- Patch version: All other changes (fixes, docs, etc.)
+- Release candidate: Commits with "rc" or "release candidate"
 
-#### Advanced Build Script
-
-```bash
-./build-advanced.sh [OPTIONS]
-```
-
-Options:
-- `-t, --type TYPE` - Version increment type: patch, minor, or major
-- `-c, --clean` - Clean all previous builds
-- `-k, --keep NUM` - Number of previous versions to keep
+**Options:**
 - `-h, --help` - Show help message
+- `-t, --type TYPE` - Force version increment type: auto, patch, minor, major, rc
+- `-c, --clean` - Clean all previous builds
+- `-k, --keep NUM` - Number of previous versions to keep (default: 1)
+- `-m, --manual` - Disable automatic version determination
 
-Examples:
+**Examples:**
 ```bash
-./build-advanced.sh -t minor      # Increment minor version
-./build-advanced.sh -t major      # Increment major version
-./build-advanced.sh -k 3          # Keep 3 previous versions
-./build-advanced.sh -c            # Clean all previous builds
+./build.sh                      # Auto-determine version from git commits
+./build.sh -t patch             # Force patch version increment (0.0.1 -> 0.0.2)
+./build.sh -t minor             # Force minor version increment (0.0.1 -> 0.1.0)
+./build.sh -t major             # Force major version increment (0.0.1 -> 1.0.0)
+./build.sh -t rc                # Create release candidate (0.0.1 -> 0.0.1-rc.1)
+./build.sh -k 3                 # Keep 3 previous versions
+./build.sh -c                   # Clean all previous builds
 ```
+
+The script also handles release candidates properly, allowing you to create and finalize pre-releases for testing.
 
 ## Installation
 
