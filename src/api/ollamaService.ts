@@ -33,6 +33,38 @@ export class OllamaService {
     const model = this.configManager.getModel();
 
     try {
+      // First check if Ollama is running
+      try {
+        await axios.get(`${ollamaUrl}/api/version`);
+      } catch (connectionError) {
+        throw new Error(
+          'Could not connect to Ollama. Please ensure that:\n\n' +
+          '1. Ollama is installed (visit https://ollama.ai to download)\n' +
+          '2. Ollama is running (check your terminal or task manager)\n' +
+          '3. The Ollama URL is correct: ' + ollamaUrl + '\n\n' +
+          'To start Ollama, open a terminal and run: ollama serve'
+        );
+      }
+
+      // Now check if the model exists
+      try {
+        const modelsResponse = await axios.get<ModelsResponse>(`${ollamaUrl}/api/tags`);
+        const availableModels = modelsResponse.data.models.map(m => m.name);
+        
+        if (!availableModels.includes(model)) {
+          throw new Error(
+            `The model "${model}" is not available in Ollama.\n\n` +
+            `Available models: ${availableModels.join(', ')}\n\n` +
+            `To pull the model, open a terminal and run: ollama pull ${model}`
+          );
+        }
+      } catch (modelError) {
+        if (modelError instanceof Error && modelError.message.includes('not available')) {
+          throw modelError;
+        }
+        // If we can't check models, just proceed and let the chat API handle errors
+      }
+
       const response = await axios.post(
         `${ollamaUrl}/api/chat`,
         {
@@ -81,7 +113,11 @@ export class OllamaService {
       });
     } catch (error) {
       console.error('Error generating completion:', error);
-      throw error;
+      if (error instanceof Error) {
+        throw new Error(error.message);
+      } else {
+        throw new Error('Error generating response. Make sure Ollama is running with the correct model.');
+      }
     }
   }
 

@@ -340,9 +340,25 @@ export class ChatProvider implements vscode.WebviewViewProvider {
       });
     } catch (error) {
       console.error('Error generating response:', error);
+      
+      // Display a detailed error message
+      let errorMessage = 'Error: Could not generate response. Make sure Ollama is running.';
+      
+      if (error instanceof Error) {
+        errorMessage = error.message;
+      }
+      
+      // Update status with error message
       this._view.webview.postMessage({
         type: 'updateStatus',
-        text: 'Error: Could not generate response. Make sure Ollama is running.',
+        text: 'Error: Connection to Ollama failed',
+      });
+      
+      // Add error message as new assistant message for better visibility
+      this._view.webview.postMessage({
+        type: 'addMessage',
+        role: 'assistant',
+        content: `⚠️ **Error**\n\n${errorMessage}`,
       });
     }
   }

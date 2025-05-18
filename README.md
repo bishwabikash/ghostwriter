@@ -100,6 +100,28 @@ You can also manually trigger the publishing workflow from the Actions tab and o
 - `GhostWriter: Start Chat` - Opens the chat interface
 - `GhostWriter: Set AI Model` - Change the Ollama model to use
 - `GhostWriter: Set System Prompt` - Customize the system prompt
+- `GhostWriter: Check Ollama Status` - Verify connection to Ollama and check available models
+
+## Setting Up Ollama
+
+For GhostWriter to work, you need to have Ollama installed and running:
+
+1. **Install Ollama**
+   - Download from [ollama.ai](https://ollama.ai/)
+   - Follow the installation instructions for your platform
+
+2. **Start Ollama**
+   - Open a terminal and run: `ollama serve`
+   - Keep this terminal open while using GhostWriter
+
+3. **Pull a Model**
+   - In another terminal, run: `ollama pull llama3` (or your preferred model)
+   - You can list available models with: `ollama list`
+
+4. **Troubleshooting Connection Issues**
+   - Make sure Ollama is running in a terminal
+   - Check status with the `GhostWriter: Check Ollama Status` command
+   - Verify the Ollama URL in settings (default: http://localhost:11434)
 
 ## Extension Settings
 

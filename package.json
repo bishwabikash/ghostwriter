@@ -42,6 +42,10 @@
       {
         "command": "ghostwriter.setSystemPrompt",
         "title": "GhostWriter: Set System Prompt"
+      },
+      {
+        "command": "ghostwriter.checkOllamaStatus",
+        "title": "GhostWriter: Check Ollama Status"
       }
     ],
     "configuration": {

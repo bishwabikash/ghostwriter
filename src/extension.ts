@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import axios from 'axios';
 import { ChatProvider } from './chat/chatProvider';
 import { ConfigManager } from './config/configManager';
 import { OllamaService } from './api/ollamaService';
@@ -53,6 +54,59 @@ export function activate(context: vscode.ExtensionContext) {
       if (newPrompt !== undefined) {
         configManager.setSystemPrompt(newPrompt);
         vscode.window.showInformationMessage('System prompt updated');
+      }
+    })
+  );
+  
+  // Register a command to check Ollama connection status
+  context.subscriptions.push(
+    vscode.commands.registerCommand('ghostwriter.checkOllamaStatus', async () => {
+      try {
+        vscode.window.showInformationMessage('Checking Ollama connection...');
+        
+        const ollamaUrl = configManager.getOllamaUrl();
+        const model = configManager.getModel();
+        
+        try {
+          // Try to get version info
+          await vscode.window.withProgress({
+            location: vscode.ProgressLocation.Notification,
+            title: 'Checking Ollama connection...',
+            cancellable: false
+          }, async (progress) => {
+            progress.report({ message: 'Connecting to Ollama' });
+            
+            try {
+              const response = await axios.get(`${ollamaUrl}/api/version`);
+              if (response.status === 200) {
+                const version = response.data.version;
+                vscode.window.showInformationMessage(`Connected to Ollama (version ${version})`);
+              }
+            } catch (error) {
+              vscode.window.showErrorMessage(`Could not connect to Ollama at ${ollamaUrl}. Make sure Ollama is installed and running.`);
+              return;
+            }
+            
+            // Check for available models
+            progress.report({ message: 'Checking available models' });
+            try {
+              const modelsResponse = await ollamaService.getAvailableModels();
+              const models = modelsResponse.join(', ');
+              
+              if (modelsResponse.includes(model)) {
+                vscode.window.showInformationMessage(`Selected model "${model}" is available. All models: ${models}`);
+              } else {
+                vscode.window.showWarningMessage(`Selected model "${model}" is not available. Available models: ${models}`);
+              }
+            } catch (error) {
+              vscode.window.showErrorMessage(`Error checking models: ${error instanceof Error ? error.message : 'Unknown error'}`);
+            }
+          });
+        } catch (error) {
+          vscode.window.showErrorMessage(`Error: ${error instanceof Error ? error.message : 'Unknown error'}`);
+        }
+      } catch (error) {
+        vscode.window.showErrorMessage(`Error checking Ollama status: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
     })
   );
