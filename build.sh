@@ -93,14 +93,43 @@ fi
 echo "Compiling extension..."
 npm run compile
 
-# Ensure icon is in PNG format (VS Code doesn't support SVG icons)
-if [ -f "resources/icon.svg" ] && [ ! -f "resources/icon.png" ]; then
-    echo "Converting SVG icon to PNG format..."
-    if command -v svgexport &> /dev/null; then
-        svgexport resources/icon.svg resources/icon.png 128:128
-    else
-        echo "Warning: svgexport not found. Install with 'npm install -g svgexport' to auto-convert icons."
-    fi
+# Ensure SVG images are converted to PNG format (VS Code has restrictions on SVGs)
+echo "Converting SVG images to PNG format..."
+
+# Check for svgexport tool
+if ! command -v svgexport &> /dev/null; then
+    echo "Warning: svgexport not found. Installing with npm..."
+    npm install -g svgexport
+fi
+
+# Convert main icon
+if [ -f "resources/icon.svg" ]; then
+    echo "Converting icon.svg to PNG..."
+    svgexport resources/icon.svg resources/icon.png 128:128
+fi
+
+# Convert images in resources/images directory
+if [ -d "resources/images" ]; then
+    for SVG_FILE in resources/images/*.svg; do
+        if [ -f "$SVG_FILE" ]; then
+            PNG_FILE="${SVG_FILE%.svg}.png"
+            
+            # Get dimensions from SVG if possible, or use defaults
+            WIDTH=$(grep -o 'width="[0-9]*"' "$SVG_FILE" | grep -o '[0-9]*' || echo "800")
+            HEIGHT=$(grep -o 'height="[0-9]*"' "$SVG_FILE" | grep -o '[0-9]*' || echo "600")
+            
+            echo "Converting $SVG_FILE to PNG ($WIDTH x $HEIGHT)..."
+            svgexport "$SVG_FILE" "$PNG_FILE" "${WIDTH}:${HEIGHT}"
+            
+            # Update references in README.md
+            SVG_BASENAME=$(basename "$SVG_FILE")
+            PNG_BASENAME=$(basename "$PNG_FILE")
+            if grep -q "$SVG_BASENAME" README.md; then
+                echo "Updating reference in README.md: $SVG_BASENAME -> $PNG_BASENAME"
+                sed -i '' "s/$SVG_BASENAME/$PNG_BASENAME/g" README.md
+            fi
+        fi
+    done
 fi
 
 # Package the extension
