@@ -2,7 +2,7 @@
   "name": "ghostwriter",
   "displayName": "GhostWriter",
   "description": "AI code assistant powered by Ollama models",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "ghostwriter-team",
   "repository": {
     "type": "git",
@@ -12,7 +12,7 @@
   "engines": {
     "vscode": "^1.80.0"
   },
-  "icon": "resources/icon.svg",
+  "icon": "resources/icon.png",
   "galleryBanner": {
     "color": "#1e1e1e",
     "theme": "dark"

@@ -93,6 +93,16 @@ fi
 echo "Compiling extension..."
 npm run compile
 
+# Ensure icon is in PNG format (VS Code doesn't support SVG icons)
+if [ -f "resources/icon.svg" ] && [ ! -f "resources/icon.png" ]; then
+    echo "Converting SVG icon to PNG format..."
+    if command -v svgexport &> /dev/null; then
+        svgexport resources/icon.svg resources/icon.png 128:128
+    else
+        echo "Warning: svgexport not found. Install with 'npm install -g svgexport' to auto-convert icons."
+    fi
+fi
+
 # Package the extension
 echo "Packaging extension..."
 npx @vscode/vsce package
