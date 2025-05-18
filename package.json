@@ -93,7 +93,9 @@
     "watch": "webpack --watch",
     "package": "webpack --mode production --devtool hidden-source-map",
     "lint": "eslint src --ext ts",
-    "test": "jest"
+    "test": "jest",
+    "setup": "node scripts/setup.js",
+    "build": "node -r ./scripts/setup.js ./node_modules/.bin/webpack"
   },
   "devDependencies": {
     "@types/glob": "^8.1.0",
@@ -104,6 +106,7 @@
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "@vscode/test-electron": "^2.3.4",
+    "@vscode/vsce": "^3.4.0",
     "eslint": "^8.44.0",
     "glob": "^8.1.0",
     "jest": "^29.5.0",
