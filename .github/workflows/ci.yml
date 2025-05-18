@@ -21,10 +21,24 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: npm ci
-    - run: npm run compile
-    # Skip lint if you don't have a lint script defined
-    # - run: npm run lint
-    - run: npm run package
-    - name: Package extension
-      run: npx @vscode/vsce package
+    
+    - name: Install dependencies
+      run: |
+        # Set NODE_OPTIONS to load polyfills for all Node.js processes
+        echo "NODE_OPTIONS=--require=web-streams-polyfill/polyfill" >> $GITHUB_ENV
+        npm ci
+    
+    - name: Node.js version info
+      run: |
+        node --version
+        npm --version
+    
+    - name: Build
+      run: npm run compile
+    
+    - name: Package Extension with direct script
+      run: |
+        # Make sure the script is executable
+        chmod +x scripts/package-extension.js
+        # Run the script directly with polyfills
+        node scripts/package-extension.js

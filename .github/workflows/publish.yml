@@ -22,12 +22,25 @@ jobs:
           cache: 'npm'
       
       - name: Install dependencies
-        run: npm ci
-      
-      - name: Compile and package
         run: |
-          npm run compile
-          npm run package
+          # Set NODE_OPTIONS to load polyfills for all Node.js processes
+          echo "NODE_OPTIONS=--require=web-streams-polyfill/polyfill" >> $GITHUB_ENV
+          npm ci
+      
+      - name: Node.js version info
+        run: |
+          node --version
+          npm --version
+      
+      - name: Compile
+        run: npm run compile
+      
+      - name: Package Extension with direct script
+        run: |
+          # Make sure the script is executable
+          chmod +x scripts/package-extension.js
+          # Run the script directly with polyfills
+          node scripts/package-extension.js
       
       - name: Update version if provided
         if: github.event.inputs.version != ''
