@@ -1,0 +1,56 @@
+<svg width="1280" height="640" viewBox="0 0 1280 640" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="1280" height="640" fill="#1e1e1e"/>
+
+  <!-- VS Code window frame -->
+  <rect x="160" y="80" width="960" height="480" rx="8" ry="8" fill="#252526"/>
+  <rect x="160" y="80" width="960" height="30" rx="8" ry="8" fill="#3c3c3c"/>
+  
+  <!-- Window buttons -->
+  <circle cx="180" cy="95" r="6" fill="#ff6058"/>
+  <circle cx="200" cy="95" r="6" fill="#ffbd2e"/>
+  <circle cx="220" cy="95" r="6" fill="#28c941"/>
+  
+  <!-- Code in the editor -->
+  <rect x="200" y="140" width="520" height="380" fill="#1e1e1e"/>
+  
+  <!-- Code lines -->
+  <rect x="220" y="160" width="400" height="16" rx="2" fill="#569cd6" opacity="0.7"/>
+  <rect x="220" y="190" width="360" height="16" rx="2" fill="#9cdcfe" opacity="0.7"/>
+  <rect x="240" y="220" width="320" height="16" rx="2" fill="#ce9178" opacity="0.7"/>
+  <rect x="240" y="250" width="340" height="16" rx="2" fill="#4ec9b0" opacity="0.7"/>
+  <rect x="240" y="280" width="300" height="16" rx="2" fill="#dcdcaa" opacity="0.7"/>
+  <rect x="220" y="310" width="380" height="16" rx="2" fill="#9cdcfe" opacity="0.7"/>
+  <rect x="220" y="340" width="410" height="16" rx="2" fill="#c586c0" opacity="0.7"/>
+  <rect x="240" y="370" width="330" height="16" rx="2" fill="#6a9955" opacity="0.7"/>
+  <rect x="220" y="400" width="370" height="16" rx="2" fill="#4ec9b0" opacity="0.7"/>
+  <rect x="220" y="430" width="330" height="16" rx="2" fill="#dcdcaa" opacity="0.7"/>
+  <rect x="220" y="460" width="280" height="16" rx="2" fill="#569cd6" opacity="0.7"/>
+  
+  <!-- Chat panel -->
+  <rect x="740" y="140" width="340" height="380" rx="4" fill="#2d2d2d"/>
+  
+  <!-- Ghost in chat panel -->
+  <g transform="translate(810, 180) scale(0.7)">
+    <!-- Ghost body -->
+    <path d="M64 24C45.2 24 32 37.2 32 56v36c0 2.2 1.8 4 4 4h6c1.1 0 2 0.9 2 2v6c0 1.1 0.9 2 2 2c0.6 0 1.1-0.2 1.5-0.7l10.2-12.8c0.9-1.1 2.2-1.8 3.7-1.8H68c18.8 0 32-13.2 32-32V56c0-18.8-13.2-32-32-32z" fill="#f0f0f0"/>
+    
+    <!-- Ghost eyes -->
+    <circle cx="52" cy="52" r="4" fill="#1e1e1e"/>
+    <circle cx="76" cy="52" r="4" fill="#1e1e1e"/>
+    
+    <!-- Code symbols -->
+    <path d="M46 64L38 72L46 80" stroke="#007acc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M82 64L90 72L82 80" stroke="#007acc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M70 62L58 82" stroke="#007acc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </g>
+  
+  <!-- Chat messages -->
+  <rect x="760" y="280" width="300" height="40" rx="8" fill="#3c3c3c"/>
+  <rect x="790" y="330" width="270" height="60" rx="8" fill="#007acc" opacity="0.6"/>
+  <rect x="760" y="400" width="300" height="80" rx="8" fill="#3c3c3c"/>
+  
+  <!-- Title -->
+  <text x="640" y="600" font-family="Arial, sans-serif" font-size="48" font-weight="bold" fill="#ffffff" text-anchor="middle">GhostWriter</text>
+  <text x="640" y="630" font-family="Arial, sans-serif" font-size="24" fill="#cccccc" text-anchor="middle">AI Code Assistant powered by Ollama</text>
+</svg> 

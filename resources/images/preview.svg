@@ -1,0 +1,46 @@
+<svg width="600" height="300" viewBox="0 0 600 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="600" height="300" fill="#1e1e1e"/>
+  
+  <!-- VS Code window frame -->
+  <rect x="50" y="30" width="500" height="240" rx="6" ry="6" fill="#252526"/>
+  <rect x="50" y="30" width="500" height="20" rx="6" ry="6" fill="#3c3c3c"/>
+  
+  <!-- Split view -->
+  <rect x="70" y="60" width="250" height="190" fill="#1e1e1e"/>
+  <rect x="330" y="60" width="200" height="190" rx="4" fill="#2d2d2d"/>
+  
+  <!-- Code lines -->
+  <rect x="80" y="70" width="200" height="10" rx="2" fill="#569cd6" opacity="0.7"/>
+  <rect x="80" y="90" width="180" height="10" rx="2" fill="#9cdcfe" opacity="0.7"/>
+  <rect x="90" y="110" width="160" height="10" rx="2" fill="#ce9178" opacity="0.7"/>
+  <rect x="90" y="130" width="170" height="10" rx="2" fill="#4ec9b0" opacity="0.7"/>
+  <rect x="90" y="150" width="150" height="10" rx="2" fill="#dcdcaa" opacity="0.7"/>
+  <rect x="80" y="170" width="190" height="10" rx="2" fill="#9cdcfe" opacity="0.7"/>
+  <rect x="80" y="190" width="205" height="10" rx="2" fill="#c586c0" opacity="0.7"/>
+  <rect x="90" y="210" width="165" height="10" rx="2" fill="#6a9955" opacity="0.7"/>
+  <rect x="80" y="230" width="185" height="10" rx="2" fill="#4ec9b0" opacity="0.7"/>
+  
+  <!-- Chat panel with ghost -->
+  <g transform="translate(370, 90) scale(0.4)">
+    <!-- Ghost body -->
+    <path d="M64 24C45.2 24 32 37.2 32 56v36c0 2.2 1.8 4 4 4h6c1.1 0 2 0.9 2 2v6c0 1.1 0.9 2 2 2c0.6 0 1.1-0.2 1.5-0.7l10.2-12.8c0.9-1.1 2.2-1.8 3.7-1.8H68c18.8 0 32-13.2 32-32V56c0-18.8-13.2-32-32-32z" fill="#f0f0f0"/>
+    
+    <!-- Ghost eyes -->
+    <circle cx="52" cy="52" r="4" fill="#1e1e1e"/>
+    <circle cx="76" cy="52" r="4" fill="#1e1e1e"/>
+    
+    <!-- Code symbols -->
+    <path d="M46 64L38 72L46 80" stroke="#007acc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M82 64L90 72L82 80" stroke="#007acc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <path d="M70 62L58 82" stroke="#007acc" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  </g>
+  
+  <!-- Chat messages -->
+  <rect x="340" y="140" width="180" height="20" rx="4" fill="#3c3c3c"/>
+  <rect x="360" y="170" width="160" height="30" rx="4" fill="#007acc" opacity="0.6"/>
+  <rect x="340" y="210" width="180" height="30" rx="4" fill="#3c3c3c"/>
+  
+  <!-- GhostWriter text -->
+  <text x="300" y="290" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#ffffff" text-anchor="middle">GhostWriter</text>
+</svg> 
