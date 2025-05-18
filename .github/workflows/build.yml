@@ -38,6 +38,11 @@ jobs:
     - name: Install vsce globally
       run: npm install -g @vscode/vsce
     
+    - name: Configure Git identity
+      run: |
+        git config --global user.name "bishwabikash"
+        git config --global user.email "bishwa.das94@gmail.com"
+    
     - name: Run build.sh
       run: |
         chmod +x ./build.sh
