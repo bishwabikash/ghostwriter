@@ -2,7 +2,7 @@
   "name": "ghostwriter",
   "displayName": "GhostWriter",
   "description": "AI code assistant powered by Ollama models",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "publisher": "ghostwriter-team",
   "repository": {
     "type": "git",
