@@ -12,7 +12,7 @@ jobs:
     
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
     
     steps:
     - uses: actions/checkout@v4
@@ -24,20 +24,43 @@ jobs:
         cache: 'npm'
     
     - name: Install dependencies
-      run: npm ci
-    
-    - name: Setup Environment and Verify
       run: |
-        node scripts/setup.js
-        node -e "console.log('ReadableStream available:', typeof global.ReadableStream !== 'undefined')"
+        npm ci
+        # Install global web-streams-polyfill package
+        npm install -g web-streams-polyfill
+    
+    - name: Create polyfill wrapper script
+      run: |
+        cat > wrapper.js << 'EOF'
+        // Load web streams polyfill
+        require('web-streams-polyfill/dist/ponyfill.js');
+        
+        // Ensure ReadableStream is available
+        if (typeof global.ReadableStream === 'undefined') {
+          const { ReadableStream } = require('web-streams-polyfill/dist/ponyfill.js');
+          global.ReadableStream = ReadableStream;
+          console.log('Added ReadableStream polyfill');
+        }
+        
+        // Execute the original command
+        const { spawnSync } = require('child_process');
+        const args = process.argv.slice(2);
+        if (args.length === 0) {
+          console.error('No command specified');
+          process.exit(1);
+        }
+        
+        console.log(`Running: ${args.join(' ')}`);
+        const result = spawnSync(args[0], args.slice(1), { stdio: 'inherit' });
+        process.exit(result.status);
+        EOF
+        chmod +x wrapper.js
 
-    - name: Build with Polyfills
-      run: node -r ./scripts/setup.js ./node_modules/.bin/webpack
-    
-    - name: Package Extension with Polyfills
-      run: |
-        npm install -g @vscode/vsce
-        node -r ./scripts/setup.js $(which vsce) package
+    - name: Build
+      run: npm run compile
+
+    - name: Package Extension with polyfill
+      run: node wrapper.js npx @vscode/vsce package
       
     - name: Upload Extension
       uses: actions/upload-artifact@v4
